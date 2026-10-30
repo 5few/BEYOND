@@ -1,0 +1,15 @@
+BEYOND Fabric 1.21.11 v0.3.0-alpha
+
+This is source code, not a working JAR.
+
+GitHub Actions (no local Gradle installation needed):
+  1) Upload the entire project contents to a new GitHub repository.
+  2) Open Actions -> Build BEYOND Fabric 1.21.11 -> Run workflow.
+  3) When successful, download the JAR from the run's Artifacts.
+  4) Extract beyond-fabric-0.3.0-alpha.jar into Minecraft's mods folder.
+  5) Install Fabric API 1.21.11 too; test on a backed-up new world.
+
+Local: install Java 21 + Gradle 9.2.1 and run gradle clean build.
+If it fails, share the complete Gradle error log.
+
+Important: full cinematics, custom Arboria terrain, NPCs, and composite keybindings aren't implemented yet.
