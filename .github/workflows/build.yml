@@ -1,0 +1,50 @@
+name: Build BEYOND Fabric 1.21.11
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.2.1'
+
+      - name: Build BEYOND
+        run: gradle clean build --stacktrace --no-daemon
+
+      - name: Verify JAR
+        run: |
+          JAR="build/libs/beyond-fabric-0.3.0-alpha.jar"
+
+          test -f "$JAR"
+
+          jar tf "$JAR" | grep -Fxq 'fabric.mod.json'
+          jar tf "$JAR" | grep -Fxq 'dev/beyond/core/BeyondMod.class'
+          jar tf "$JAR" | grep -Fxq 'dev/beyond/client/BeyondClient.class'
+
+          echo "BEYOND JAR verification passed!"
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: BEYOND-Fabric-1.21.11
+          path: build/libs/beyond-fabric-0.3.0-alpha.jar
+          if-no-files-found: error
